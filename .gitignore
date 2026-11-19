@@ -1,0 +1,8 @@
+.env
+.venv/
+__pycache__/
+*.py[cod]
+telecom.db
+models/
+eval/results.json
+build/

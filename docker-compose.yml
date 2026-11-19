@@ -1,0 +1,21 @@
+services:
+  api:
+    build: .
+    ports: ["8000:8000"]
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://telecom:telecom@postgres:5432/telecom
+      REDIS_URL: redis://redis:6379/0
+      OLLAMA_URL: http://ollama:11434
+    depends_on: [postgres, redis, ollama]
+    volumes: ["./models:/app/models"]
+  postgres:
+    image: postgres:16-alpine
+    environment: {POSTGRES_USER: telecom, POSTGRES_PASSWORD: telecom, POSTGRES_DB: telecom}
+    volumes: ["postgres_data:/var/lib/postgresql/data"]
+  redis:
+    image: redis:7-alpine
+  ollama:
+    image: ollama/ollama:latest
+    volumes: ["ollama_data:/root/.ollama"]
+volumes: {postgres_data: {}, ollama_data: {}}
